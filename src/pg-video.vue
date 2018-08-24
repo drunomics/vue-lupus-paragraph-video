@@ -1,6 +1,6 @@
 <template>
   <div class="paragraph paragraph--video">
-    <slot name="field_media"/>
+    <slot name="field-video"/>
     <slot/>
   </div>
 </template>
