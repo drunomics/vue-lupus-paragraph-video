@@ -12,22 +12,18 @@ You can use the following slots
 
 - `title` ( optional )
   Title.
-- `video` ( default )
+- `video` ( required )
   Video.
 - `thumbnail` ( optional )
   Video thumbnail.
 
 ## Example
 ```
-<pg-image>
-  <lupus-image
-    width="200" height="300"
-    :src="..."
-    slot="image"
-  >
-    <img :src="...">
-  </lupus-image>
-  <span slot="copyright">Lorem Ipsum.</span>
-  <span slot="caption">Lorem Ipsum.</span>
-</pg-image>
+<pg-video>
+  <h1 slot="title">Video Title</h1>
+  <div slot="video">
+    <!-- embed code -->
+  </div>
+  <img slot="thumbnail" src="..." />
+</pg-video>
 ```

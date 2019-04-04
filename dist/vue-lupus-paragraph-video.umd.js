@@ -115,12 +115,12 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"553e40dc-vue-loader-template"}!./node_modules/@vue/cli-service/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/pg-video.vue?vue&type=template&id=0d5d3f8d&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"paragraph paragraph--video"},[(_vm.$slots.title)?_c('div',{staticClass:"title"},[_vm._t("title")],2):_vm._e(),_c('div',{staticClass:"video"},[_vm._t(_vm.$slots.video ? 'video': 'default'),_c('div',[(_vm.$slots.thumbnail)?_c('div',{staticClass:"thumbnail"},[_vm._t("thumbnail")],2):_vm._e()])],2)])}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"553e40dc-vue-loader-template"}!./node_modules/@vue/cli-service/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/pg-video.vue?vue&type=template&id=2a376aaf&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"paragraph paragraph--video"},[(_vm.$slots.title)?_c('div',{staticClass:"title"},[_vm._t("title")],2):_vm._e(),(!_vm.showThumbnail)?_c('div',{staticClass:"video"},[_vm._t("video")],2):_vm._e(),(_vm.showThumbnail)?_c('div',{staticClass:"thumbnail",on:{"click":_vm.loadVideo}},[_vm._t("thumbnail")],2):_vm._e()])}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/pg-video.vue?vue&type=template&id=0d5d3f8d&
+// CONCATENATED MODULE: ./src/pg-video.vue?vue&type=template&id=2a376aaf&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/@vue/cli-plugin-babel/node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/pg-video.vue?vue&type=script&lang=js&
 //
@@ -142,8 +142,38 @@ var staticRenderFns = []
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ var pg_videovue_type_script_lang_js_ = ({
-  name: 'PgVideo'
+  name: 'PgVideo',
+
+  data() {
+    return {
+      showThumbnail: false
+    };
+  },
+
+  computed: {
+    slotThumbnail() {
+      return !!this.$slots.thumbnail;
+    }
+
+  },
+
+  mounted() {
+    if (this.slotThumbnail) {
+      this.showThumbnail = true;
+    }
+  },
+
+  methods: {
+    loadVideo() {
+      this.showThumbnail = false; // Todo: make autoplay work.
+    }
+
+  }
 });
 // CONCATENATED MODULE: ./src/pg-video.vue?vue&type=script&lang=js&
  /* harmony default export */ var src_pg_videovue_type_script_lang_js_ = (pg_videovue_type_script_lang_js_); 

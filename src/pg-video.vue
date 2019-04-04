@@ -6,11 +6,15 @@
     >
       <slot name="title"/>
     </div>
-    <div class="video">
-      <slot :name="$slots.video ? 'video': 'default'" />
-    <div>
     <div
-      v-if="$slots.thumbnail"
+      v-if="!showThumbnail"
+      class="video"
+    >
+      <slot name="video" />
+    </div>
+    <div
+      v-if="showThumbnail"
+      @click="loadVideo"
       class="thumbnail"
     >
       <slot name="thumbnail"/>
@@ -19,6 +23,27 @@
 </template>
 <script>
 export default {
-  name: 'PgVideo'
+  name: 'PgVideo',
+  data () {
+    return {
+      showThumbnail: false
+    }
+  },
+  computed: {
+    slotThumbnail () {
+      return !!this.$slots.thumbnail
+    }
+  },
+  mounted () {
+    if (this.slotThumbnail) {
+      this.showThumbnail = true
+    }
+  },
+  methods: {
+    loadVideo () {
+      this.showThumbnail = false
+      // Todo: make autoplay work.
+    }
+  }
 }
 </script>

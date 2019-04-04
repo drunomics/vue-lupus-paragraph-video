@@ -2,7 +2,7 @@
   "name": "vue-lupus-paragraph-video",
   "version": "1.0.0",
   "description": "Vue paragraph video",
-  "main": "dist/main.js",
+  "main": "dist/vue-lupus-paragraph-video.umd.min.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --target lib --name vue-lupus-paragraph-video src/pg-video.vue",
