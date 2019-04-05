@@ -1,5 +1,5 @@
 {
-  "name": "vue-lupus-paragraph-video",
+  "name": "@drunomics/vue-lupus-paragraph-video",
   "version": "1.0.0",
   "description": "Vue paragraph video",
   "main": "dist/vue-lupus-paragraph-video.umd.min.js",

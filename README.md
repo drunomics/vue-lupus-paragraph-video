@@ -15,7 +15,7 @@ You can use the following slots
 - `video` ( required )
   Video.
 - `thumbnail` ( optional )
-  Video thumbnail.
+  Video thumbnail. Should be a <lupus-image>
 
 ## Example
 ```
@@ -24,6 +24,11 @@ You can use the following slots
   <div slot="video">
     <!-- embed code -->
   </div>
-  <img slot="thumbnail" src="..." />
+  <lupus-image
+    slot="thumbnail"
+    width="768"
+    height="432"
+    :src="..."
+  />
 </pg-video>
 ```
