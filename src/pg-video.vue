@@ -18,6 +18,7 @@
       class="thumbnail"
     >
       <slot name="thumbnail"/>
+      <div class="play-button"></div>
     </div>
   </div>
 </template>
