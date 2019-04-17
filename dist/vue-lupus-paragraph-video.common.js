@@ -87,6 +87,49 @@ module.exports =
 /************************************************************************/
 /******/ ({
 
+/***/ "f6fd":
+/***/ (function(module, exports) {
+
+// document.currentScript polyfill by Adam Miller
+
+// MIT license
+
+(function(document){
+  var currentScript = "currentScript",
+      scripts = document.getElementsByTagName('script'); // Live NodeList collection
+
+  // If browser needs currentScript polyfill, add get currentScript() to the document object
+  if (!(currentScript in document)) {
+    Object.defineProperty(document, currentScript, {
+      get: function(){
+
+        // IE 6-10 supports script readyState
+        // IE 10+ support stack trace
+        try { throw new Error(); }
+        catch (err) {
+
+          // Find the second match for the "at" string to get file src url from stack.
+          // Specifically works with the format of stack traces in IE.
+          var i, res = ((/.*at [^\(]*\((.*):.+:.+\)$/ig).exec(err.stack) || [false])[1];
+
+          // For all scripts on the page, if src matches or if ready state is interactive, return the script tag
+          for(i in scripts){
+            if(scripts[i].src == res || scripts[i].readyState == "interactive"){
+              return scripts[i];
+            }
+          }
+
+          // If no match, return null
+          return null;
+        }
+      }
+    });
+  }
+})(document);
+
+
+/***/ }),
+
 /***/ "fb15":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -97,6 +140,10 @@ __webpack_require__.r(__webpack_exports__);
 // This file is imported into lib/wc client bundles.
 
 if (typeof window !== 'undefined') {
+  if (true) {
+    __webpack_require__("f6fd")
+  }
+
   var i
   if ((i = window.document.currentScript) && (i = i.src.match(/(.+\/)[^/]+\.js(\?.*)?$/))) {
     __webpack_require__.p = i[1] // eslint-disable-line
@@ -106,14 +153,23 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"553e40dc-vue-loader-template"}!./node_modules/@vue/cli-service/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/pg-video.vue?vue&type=template&id=6facd2ba&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"paragraph paragraph--video"},[(_vm.$slots.title)?_c('div',{staticClass:"title"},[_vm._t("title")],2):_vm._e(),(!_vm.showThumbnail)?_c('div',{staticClass:"video"},[_vm._t("video")],2):_vm._e(),(_vm.showThumbnail)?_c('div',{staticClass:"thumbnail",on:{"click":_vm.loadVideo}},[_vm._t("thumbnail"),_c('div',{staticClass:"play-button"})],2):_vm._e()])}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"6a83156a-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/pg-video.vue?vue&type=template&id=75d225f0&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"paragraph paragraph--video"},[(_vm.$slots.title)?_c('div',{staticClass:"title"},[_vm._t("title")],2):_vm._e(),(!_vm.showThumbnail)?_c('div',{ref:"video",staticClass:"video"},[(!_vm.autoplay)?_vm._t("video"):_vm._e(),(_vm.autoplay)?_c('div',{style:({width: _vm.videoWidth, height: _vm.videoHeight}),attrs:{"id":"player"}}):_vm._e()],2):_vm._e(),(_vm.showThumbnail)?_c('div',{staticClass:"thumbnail",on:{"click":_vm.loadVideo}},[_vm._t("thumbnail"),_c('div',{staticClass:"play-button"})],2):_vm._e()])}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/pg-video.vue?vue&type=template&id=6facd2ba&
+// CONCATENATED MODULE: ./src/pg-video.vue?vue&type=template&id=75d225f0&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/@vue/cli-plugin-babel/node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/pg-video.vue?vue&type=script&lang=js&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/pg-video.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -143,7 +199,13 @@ var staticRenderFns = []
 
   data() {
     return {
-      showThumbnail: false
+      showThumbnail: false,
+      autoplay: false,
+      youtubeVideoId: false,
+      videoLoaded: false,
+      player: false,
+      videoHeight: '360',
+      videoWidth: '640'
     };
   },
 
@@ -158,18 +220,81 @@ var staticRenderFns = []
     if (this.slotThumbnail) {
       this.showThumbnail = true;
     }
+
+    this.setYoutubeVideoData();
   },
 
   methods: {
     loadVideo() {
-      this.showThumbnail = false; // Todo: make autoplay work.
+      this.showThumbnail = false;
+      this.autoplay = true;
+      this.renderYoutubeVideo();
+    },
+
+    setYoutubeVideoData() {
+      let iframe = false;
+      let url = false;
+
+      if (this.$refs.video && this.$refs.video.children[0].children[0]) {
+        iframe = this.$refs.video.children[0].children[0];
+      }
+
+      if (this.$refs.default && this.$refs.default.children[0].children[0]) {
+        iframe = this.$refs.default.children[0].children[0];
+      }
+
+      url = iframe.src ? iframe.src : false;
+      this.videoWidth = iframe.width ? iframe.width : false;
+      this.videoHeight = iframe.height ? iframe.height : false;
+
+      if (url) {
+        const matches = url.match(/(embed\/)(.{11})/);
+        this.youtubeVideoId = matches[2];
+      }
+    },
+
+    renderYoutubeVideo() {
+      if (this.youtubeVideoId && !this.videoLoaded) {
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        tag.onload = this.createYoutubePlayer;
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+      }
+    },
+
+    createYoutubePlayer() {
+      // We need to poll for the youtube ifram API to be ready.
+      let x = 0;
+      let intervalId = window.setInterval(() => {
+        x++;
+
+        if (typeof YT !== 'undefined') {
+          // eslint-disable-next-line no-undef
+          this.player = new YT.Player('player', {
+            height: this.videoHeight,
+            width: this.videoWidth,
+            videoId: this.youtubeVideoId,
+            events: {
+              'onReady': function onPlayerReady(event) {
+                event.target.playVideo();
+              }
+            }
+          });
+          window.clearInterval(intervalId);
+        }
+
+        if (x > 5) {
+          window.clearInterval(intervalId);
+        }
+      }, 100);
     }
 
   }
 });
 // CONCATENATED MODULE: ./src/pg-video.vue?vue&type=script&lang=js&
  /* harmony default export */ var src_pg_videovue_type_script_lang_js_ = (pg_videovue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./node_modules/@vue/cli-service/node_modules/vue-loader/lib/runtime/componentNormalizer.js
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 /* globals __VUE_SSR_CONTEXT__ */
 
 // IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
