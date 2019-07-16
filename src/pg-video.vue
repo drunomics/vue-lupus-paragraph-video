@@ -122,56 +122,54 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.paragraph {
-  margin: 3em auto 0 auto;
-}
+<style scoped lang="scss">
+.paragraph--video {
+  .video {
+    width: 100%;
+    position: relative;
+  }
 
-.video {
-  width: 100%;
-  position: relative;
-}
-
-.player {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-
-  iframe {
+  .player {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
+
+    iframe {
+      width: 100%;
+      height: 100%;
+    }
   }
-}
 
-.thumbnail {
-  cursor: pointer;
-  position: relative;
-}
-
-.play-button {
-  width: 4em;
-  height: 4em;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  margin-top: -2em;
-  margin-left: -2em;
-  background: rgba(0, 0, 0, 0.5);
-  border-radius: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  &::before {
-    content: "▶";
-    font-size: 2em;
-    display: block;
-    color: white;
+  .thumbnail {
+    cursor: pointer;
     position: relative;
-    left: 0.1em;
-    top: -0.1em;
+  }
+
+  .play-button {
+    width: 4em;
+    height: 4em;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-top: -2em;
+    margin-left: -2em;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &::before {
+      content: "▶";
+      font-size: 2em;
+      display: block;
+      color: white;
+      position: relative;
+      left: 0.1em;
+      top: -0.1em;
+    }
   }
 }
 </style>
