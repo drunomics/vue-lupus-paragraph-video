@@ -6,31 +6,32 @@
     >
       <slot name="title" />
     </div>
-    <div
-      v-if="!showThumbnail"
-      ref="video"
-      class="video"
-      :style="{'padding-bottom': `${(videoHeight / videoWidth) * 100}%`}"
-    >
+    <div class="widget">
       <div
-        v-if="!autoplay"
-        class="player"
+        v-if="!showThumbnail"
+        ref="video"
+        class="video"
       >
-        <slot name="video" />
+        <div
+          v-if="!autoplay"
+          class="player"
+        >
+          <slot name="video" />
+        </div>
+        <div
+          v-if="autoplay"
+          id="player"
+          class="player"
+        />
       </div>
       <div
-        v-if="autoplay"
-        id="player"
-        class="player"
-      />
-    </div>
-    <div
-      v-if="showThumbnail"
-      class="thumbnail"
-      @click="loadVideo"
-    >
-      <slot name="thumbnail" />
-      <div class="play-button" />
+        v-if="$slots.thumbnail"
+        class="thumbnail"
+        @click="loadVideo"
+      >
+        <slot name="thumbnail" />
+        <div class="play-button" />
+      </div>
     </div>
   </div>
 </template>
@@ -49,15 +50,7 @@ export default {
       videoWidth: '640'
     }
   },
-  computed: {
-    slotThumbnail () {
-      return !!this.$slots.thumbnail
-    }
-  },
   mounted () {
-    if (this.slotThumbnail) {
-      this.showThumbnail = true
-    }
     this.setYoutubeVideoData()
   },
   methods: {
