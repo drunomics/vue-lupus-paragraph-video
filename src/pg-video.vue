@@ -25,7 +25,7 @@
         />
       </div>
       <div
-        v-if="$slots.thumbnail"
+        v-if="$slots.thumbnail && !videoLoaded"
         class="thumbnail"
         @click="loadVideo"
       >
@@ -86,6 +86,7 @@ export default {
         var firstScriptTag = document.getElementsByTagName('script')[0]
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
       }
+      this.videoLoaded = true;
     },
     createYoutubePlayer () {
       // We need to poll for the youtube ifram API to be ready.
